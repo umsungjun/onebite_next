@@ -4,6 +4,10 @@
   gap: 10px;
 }
 
+.noSearchBook {
+  text-align: center;
+}
+
 .coverImgContainer {
   position: relative;
   display: flex;
