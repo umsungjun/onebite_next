@@ -1,7 +1,11 @@
 import { BookData } from "@/types";
 
-export const fetchBooks = async (): Promise<BookData[]> => {
-  const url = `${process.env.API_BASE_URL}/book`;
+export const fetchBooks = async (q?: string): Promise<BookData[]> => {
+  let url = `${process.env.API_BASE_URL}/book`;
+
+  if (q) {
+    url = `${process.env.API_BASE_URL}/book/search?q=${q}`;
+  }
 
   try {
     const response = await fetch(url);
