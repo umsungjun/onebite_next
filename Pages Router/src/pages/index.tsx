@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { InferGetServerSidePropsType } from "next";
+import { InferGetStaticPropsType } from "next";
 import style from "./index.module.css";
 import { fetchBooks } from "@/lib/fetchBooks";
 import { fetchRandomBooks } from "@/lib/fetchRandomBooks";
@@ -7,7 +7,8 @@ import { fetchRandomBooks } from "@/lib/fetchRandomBooks";
 import SearchAbleLayout from "@/components/SearchAbleLayout";
 import BookItem from "@/components/BookItem";
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
+  console.log("getStaticProps called");
   // Home 컾포넌트를 렌더링 하기 이전에 서버 사이드에서 데이터를 가져오는 함수
   const [allBooks, randomBoos] = await Promise.all([
     fetchBooks(),
@@ -25,7 +26,7 @@ export const getServerSideProps = async () => {
 export default function Home({
   allBooks,
   randomBoos,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <div className={style.container}>
       <section>
