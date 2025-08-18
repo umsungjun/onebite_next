@@ -8,8 +8,6 @@ import SearchAbleLayout from "@/components/SearchAbleLayout";
 import BookItem from "@/components/BookItem";
 
 export const getStaticProps = async () => {
-  console.log("getStaticProps called");
-  // Home 컾포넌트를 렌더링 하기 이전에 서버 사이드에서 데이터를 가져오는 함수
   const [allBooks, randomBoos] = await Promise.all([
     fetchBooks(),
     fetchRandomBooks(),
