@@ -1,4 +1,4 @@
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import style from "./[id].module.css";
 import { fetchOneBook } from "@/lib/fetchOneBook";
 
@@ -9,9 +9,20 @@ import { fetchOneBook } from "@/lib/fetchOneBook";
  * - /book/[id]/[id] (다중 파라미터)
  */
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getStaticPaths = () => {
+  return {
+    paths: [
+      { params: { id: "1" } },
+      { params: { id: "2" } },
+      { params: { id: "3" } },
+    ],
+    fallback: false, // 지정하지 않은 id 경로는 404 페이지로 처리
+    // fallback: true, // 지정하지 않은 id 경로는 로딩 상태로 처리
+    // fallback: "blocking", // 지정하지 않은 id 경로는 서버에서 데이터를 가져 오는 동안 로딩 상태로 처리하고, 데이터가 준비되면 페이지를 렌더링
+  };
+};
+
+export const getStaticProps = async (context: GetStaticPropsContext) => {
   const id = context.params!.id; // 무조건 URL 파라미터가 존재해야 페이지에 접근할 수 있음
 
   const book = await fetchOneBook(Number(id));
@@ -23,7 +34,7 @@ export const getServerSideProps = async (
 
 export default function Page({
   book,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   if (!book) {
     return (
       <div className={style.container}>
