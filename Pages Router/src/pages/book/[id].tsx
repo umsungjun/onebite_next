@@ -1,4 +1,5 @@
 import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import { useRouter } from "next/router";
 import style from "./[id].module.css";
 import { fetchOneBook } from "@/lib/fetchOneBook";
 
@@ -16,9 +17,10 @@ export const getStaticPaths = () => {
       { params: { id: "2" } },
       { params: { id: "3" } },
     ],
-    fallback: false, // 지정하지 않은 id 경로는 404 페이지로 처리
-    // fallback: true, // 지정하지 않은 id 경로는 로딩 상태로 처리
-    // fallback: "blocking", // 지정하지 않은 id 경로는 서버에서 데이터를 가져 오는 동안 로딩 상태로 처리하고, 데이터가 준비되면 페이지를 렌더링
+    // fallback옵션 없는 경로(id) 요청 시, 기본 값 false
+    // fallback: false, // 지정하지 않은 id 경로는 404 페이지로 처리
+    // fallback: true, // 데이터를 제외한 페이지만 미리 반환(next 서버에 정적 페이지 추가 됨)
+    fallback: "blocking", // SSR 방식으로 페이지 사전 랜더링, next 서버에 정적 페이지 추가 됨
   };
 };
 
@@ -26,6 +28,12 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
   const id = context.params!.id; // 무조건 URL 파라미터가 존재해야 페이지에 접근할 수 있음
 
   const book = await fetchOneBook(Number(id));
+
+  if (!book) {
+    return {
+      notFound: true, // 해당 id에 대한 도서 정보가 없을 경우 404 페이지로 이동
+    };
+  }
 
   return {
     props: { book },
@@ -35,6 +43,9 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 export default function Page({
   book,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const router = useRouter();
+  if (router.isFallback) return <div>로딩 중...</div>;
+
   if (!book) {
     return (
       <div className={style.container}>
