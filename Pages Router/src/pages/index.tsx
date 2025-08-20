@@ -18,6 +18,7 @@ export const getStaticProps = async () => {
       allBooks,
       randomBoos,
     },
+    revalidate: 60, // 60초마다 페이지를 갱신
   };
 };
 
