@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 
+import SearchBar from "./searchbar";
+
 interface LayoutProps {
   children: ReactNode;
 }
@@ -7,7 +9,7 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   return (
     <div>
-      <div>임시 서치바</div>
+      <SearchBar />
       {children}
     </div>
   );
