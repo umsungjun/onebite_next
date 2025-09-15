@@ -1,5 +1,7 @@
-import books from "@/mock/books.json";
+import { BookData } from "@/types";
+
 import BookItem from "@/components/book-item";
+import NoSearchBook from "@/components/noSearchBook";
 
 export default async function Page({
   searchParams,
@@ -7,6 +9,16 @@ export default async function Page({
   searchParams: Promise<{ q?: string }>;
 }) {
   const { q } = await searchParams;
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/book/search?q=${q}`
+  );
+
+  if (res.ok === false) {
+    return <NoSearchBook />;
+  }
+
+  const books: BookData[] = await res.json();
 
   return (
     <div>
