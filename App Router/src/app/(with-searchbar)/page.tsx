@@ -1,12 +1,14 @@
-import BookItem from "@/components/book-item";
 import style from "./page.module.css";
 import { BookData } from "@/types";
+
+import BookItem from "@/components/book-item";
+import NoSearchBook from "@/components/noSearchBook";
 
 async function AllBooks() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/book`);
 
   if (res.ok === false) {
-    return <div>도서 정보를 불러오지 못했습니다.</div>;
+    return <NoSearchBook />;
   }
 
   const allBooks: BookData[] = await res.json();
@@ -26,7 +28,7 @@ async function RecommendedBooks() {
   );
 
   if (res.ok === false) {
-    return <div>도서 정보를 불러오지 못했습니다.</div>;
+    return <NoSearchBook />;
   }
 
   const recommendationBooks: BookData[] = await res.json();
