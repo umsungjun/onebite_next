@@ -5,7 +5,9 @@ import BookItem from "@/components/book-item";
 import NoSearchBook from "@/components/noSearchBook";
 
 async function AllBooks() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/book`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/book`, {
+    cache: "force-cache",
+  });
 
   if (res.ok === false) {
     return <NoSearchBook />;
