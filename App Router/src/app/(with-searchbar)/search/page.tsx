@@ -11,7 +11,10 @@ export default async function Page({
   const { q } = await searchParams;
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/book/search?q=${q}`
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/book/search?q=${q}`,
+    {
+      cache: "force-cache", // 한번 불러온 데이터는 캐시에 저장
+    }
   );
 
   if (res.ok === false) {
