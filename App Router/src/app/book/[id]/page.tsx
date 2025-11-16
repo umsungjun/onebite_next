@@ -2,6 +2,7 @@ import Image from "next/image";
 import style from "./page.module.css";
 
 import NoSearchBook from "@/components/noSearchBook";
+import { notFound } from "next/navigation";
 
 /* 
   - 동적 경로 페이지 사전 생성
@@ -21,6 +22,10 @@ export default async function Page({
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/book/${id}`);
 
   if (res.ok === false) {
+    if (res.status === 404) {
+      notFound();
+    }
+
     return <NoSearchBook />;
   }
 
