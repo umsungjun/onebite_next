@@ -3,6 +3,14 @@ import style from "./page.module.css";
 
 import NoSearchBook from "@/components/noSearchBook";
 
+/* 
+  - 동적 경로 페이지 사전 생성
+  - 빌드 시점에 미리 랜더링하기 때문에 최신 데이터가 반영되지 않을 수 있음
+*/
+export function generateStaticParams() {
+  return [{ id: "1" }, { id: "2" }, { id: "3" }];
+}
+
 export default async function Page({
   params,
 }: {
