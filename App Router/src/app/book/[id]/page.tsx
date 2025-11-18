@@ -4,6 +4,10 @@ import style from "./page.module.css";
 import NoSearchBook from "@/components/noSearchBook";
 import { notFound } from "next/navigation";
 
+// export const dynamicParams = false;
+// true: 없는 파라미터 접근 시 정적 페이지로 랜더링
+// false: 아래에 동적 경로에서 없는 파라미터 접근 시 404 페이지 표시
+
 /* 
   - 동적 경로 페이지 사전 생성
   - 빌드 시점에 미리 랜더링하기 때문에 최신 데이터가 반영되지 않을 수 있음
