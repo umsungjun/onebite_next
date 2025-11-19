@@ -4,6 +4,14 @@ import { BookData } from "@/types";
 import BookItem from "@/components/book-item";
 import NoSearchBook from "@/components/noSearchBook";
 
+/* 
+  - auto: 기본값, 요청에 따라 동적 또는 정적 랜더링 결정
+  - force-dynamic: 페이지를 강제로 Dynamic 페이지로 렌더링
+  - force-static: 페이지를 강제로 Static 페이지로 렌더링
+  - error: 페이지를 강제로 Static 페이지로 렌더링 시도, 불가능할 경우 에러 발생
+*/
+export const dynamic = "auto";
+
 async function AllBooks() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/book`, {
     cache: "force-cache",
