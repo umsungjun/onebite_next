@@ -3,6 +3,7 @@ import style from "./page.module.css";
 
 import NoSearchBook from "@/components/noSearchBook";
 import { notFound } from "next/navigation";
+import { createReviewAction } from "@/actions/create-review.action";
 
 // export const dynamicParams = false;
 // true: 없는 파라미터 접근 시 정적 페이지로 랜더링
@@ -51,21 +52,13 @@ async function BookDetail({ bookId }: { bookId: string }) {
   );
 }
 
-function ReviewEditor() {
-  async function createReviewAction(formData: FormData) {
-    "use server";
-
-    const content = formData.get("content")?.toString();
-    const author = formData.get("author")?.toString();
-
-    console.log("리뷰 작성 서버 액션 실행 테스트", content, author);
-  }
-
+function ReviewEditor({ bookId }: { bookId: string }) {
   return (
     <section>
       <form action={createReviewAction}>
-        <input name="content" placeholder="리뷰 내용" />
-        <input name="author" placeholder="작성자" />
+        <input name="bookId" defaultValue={bookId} hidden readOnly />
+        <input required name="author" placeholder="작성자" />
+        <input required name="content" placeholder="리뷰 내용" />
         <button type="submit">작성하기</button>
       </form>
     </section>
@@ -78,7 +71,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <div className={style.container}>
       <BookDetail bookId={id}></BookDetail>
-      <ReviewEditor />
+      <ReviewEditor bookId={id} />
     </div>
   );
 }
