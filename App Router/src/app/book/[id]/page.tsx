@@ -3,7 +3,9 @@ import style from "./page.module.css";
 
 import NoSearchBook from "@/components/noSearchBook";
 import { notFound } from "next/navigation";
-import { createReviewAction } from "@/actions/create-review.action";
+import { ReviewData } from "@/types";
+import ReviewItem from "@/components/review-item";
+import ReviewEditor from "@/components/review-editor";
 
 // export const dynamicParams = false;
 // true: 없는 파라미터 접근 시 정적 페이지로 랜더링
@@ -52,15 +54,24 @@ async function BookDetail({ bookId }: { bookId: string }) {
   );
 }
 
-function ReviewEditor({ bookId }: { bookId: string }) {
+async function ReviewList({ bookId }: { bookId: string }) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/review/book/${bookId}`
+  );
+
+  if (!res.ok) {
+    throw new Error(`Review fetch failed: ${res.statusText}`);
+  }
+
+  const reviews: ReviewData[] = await res.json();
+
+  console.log("reviews:", reviews);
+
   return (
     <section>
-      <form action={createReviewAction}>
-        <input name="bookId" defaultValue={bookId} hidden readOnly />
-        <input required name="author" placeholder="작성자" />
-        <input required name="content" placeholder="리뷰 내용" />
-        <button type="submit">작성하기</button>
-      </form>
+      {reviews.map((review) => {
+        return <ReviewItem key={`review-item-${review.id}`} {...review} />;
+      })}
     </section>
   );
 }
@@ -72,6 +83,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     <div className={style.container}>
       <BookDetail bookId={id}></BookDetail>
       <ReviewEditor bookId={id} />
+      <ReviewList bookId={id} />
     </div>
   );
 }
