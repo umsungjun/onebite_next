@@ -2,23 +2,30 @@
 
 import { revalidateTag } from "next/cache";
 
-export async function createReviewAction(formData: FormData) {
+export async function createReviewAction(_: any, formData: FormData) {
   const bookId = formData.get("bookId")?.toString();
   const content = formData.get("content")?.toString();
   const author = formData.get("author")?.toString();
 
   if (!bookId || !content || !author) {
-    throw new Error("리뷰 작성에 실패했습니다.");
+    return {
+      status: false,
+      error: "필수 값(bookId, content, author)이 누락되었습니다.",
+    };
   }
 
   try {
-    await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/review`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/review`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ bookId, content, author }),
     });
+
+    if (!res.ok) {
+      throw new Error(`리뷰 작성에 실패했습니다: ${res.statusText}`);
+    }
 
     // 1. 특정 주소의 해당하는 페이지만 재검증
     // revalidatePath(`/book/${bookId}`);
@@ -34,7 +41,12 @@ export async function createReviewAction(formData: FormData) {
 
     // 5. 태그 기준 재검증(fetch에서 tag 옵션 사용 시 사용 가능)
     revalidateTag(`${bookId}-reviews`);
+
+    return { status: true, error: "" };
   } catch (err) {
-    console.error("리뷰 작성 중 오류 발생:", err);
+    return {
+      status: false,
+      error: `리뷰 작성 중 오류가 발생했습니다: ${err}`,
+    };
   }
 }
