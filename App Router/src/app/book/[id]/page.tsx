@@ -21,7 +21,7 @@ export function generateStaticParams() {
 
 async function BookDetail({ bookId }: { bookId: string }) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/book/${bookId}`
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/book/${bookId}`,
   );
 
   if (res.ok === false) {
@@ -57,7 +57,7 @@ async function BookDetail({ bookId }: { bookId: string }) {
 async function ReviewList({ bookId }: { bookId: string }) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/review/book/${bookId}`,
-    { next: { tags: [`${bookId}-reviews`] } }
+    { next: { tags: [`${bookId}-reviews`] } },
   );
 
   if (!res.ok) {
@@ -75,7 +75,7 @@ async function ReviewList({ bookId }: { bookId: string }) {
   );
 }
 
-export default async function Page({
+export default async function BookPage({
   params,
 }: {
   params: Promise<{ id: string }>;
