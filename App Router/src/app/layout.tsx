@@ -1,11 +1,14 @@
 import "./globals.css";
 import Link from "next/link";
 import style from "./layout.module.css";
+import { ReactNode } from "react";
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
+  modal: ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -17,6 +20,7 @@ export default function RootLayout({
           <main>{children}</main>
           <footer>제작 @UMSUNGJUN</footer>
         </div>
+        {modal}
       </body>
     </html>
   );
