@@ -2,6 +2,7 @@ import { GetStaticPropsContext, InferGetStaticPropsType } from "next";
 import { useRouter } from "next/router";
 import style from "./[id].module.css";
 import { fetchOneBook } from "@/lib/fetchOneBook";
+import Image from "next/image";
 
 /**
  * Book 페이지 - Optional Catch All Segments
@@ -64,7 +65,12 @@ export default function Page({
         style={{ backgroundImage: `url(${coverImgUrl})` }}
         className={style.coverImgContainer}
       >
-        <img src={coverImgUrl} alt={`${title} 이미지`} />
+        <Image
+          src={coverImgUrl}
+          width={280}
+          height={350}
+          alt={`${title} 이미지`}
+        />
       </div>
       <div className={style.title}>{title}</div>
       <div className={style.subTitle}>{subTitle}</div>
