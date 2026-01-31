@@ -3,6 +3,7 @@ import { BookData } from "@/types";
 
 import BookItem from "@/components/book-item";
 import NoSearchBook from "@/components/noSearchBook";
+import { Metadata } from "next";
 
 /* 
   - auto: 기본값, 요청에 따라 동적 또는 정적 랜더링 결정
@@ -37,7 +38,7 @@ async function RecommendedBooks() {
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/book/random`,
     {
       next: { revalidate: 10 },
-    }
+    },
   );
 
   if (res.ok === false) {
@@ -54,6 +55,20 @@ async function RecommendedBooks() {
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Next.js 한입 북스",
+  description: "Next.js 한입 북스 연습용 프로젝트입니다.",
+  openGraph: {
+    title: "Next.js 한입 북스",
+    description: "Next.js 한입 북스 연습용 프로젝트입니다.",
+    images: [
+      {
+        url: "/thumbnail.png",
+      },
+    ],
+  },
+};
 
 export default function Home() {
   return (
